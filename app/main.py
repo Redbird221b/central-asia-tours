@@ -2,7 +2,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from database import init_db
+from database.database import init_db
 
 app = FastAPI(
     title="Central Asia Tours API",
@@ -50,12 +50,12 @@ from fastapi.staticfiles import StaticFiles
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 # и подключать роутеры
-from app.routers import auth, users, tours, orders
+from routers import auth, users, tours, orders
 
 app.include_router(auth.router, tags=["auth"])
-app.include_router(users.router, prefix="/users", tags=["users"])
-app.include_router(tours.router, prefix="/tours", tags=["tours"])
-app.include_router(orders.router, prefix="/orders", tags=["orders"])
+app.include_router(users.router, tags=["users"])
+app.include_router(tours.router, tags=["tours"])
+app.include_router(orders.router, tags=["orders"])
 
 # Инициализация БД
 init_db()

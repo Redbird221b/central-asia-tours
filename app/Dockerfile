@@ -2,7 +2,7 @@
 FROM python:3.12-slim
 
 # Устанавливаем рабочую директорию внутри контейнера
-WORKDIR ./
+WORKDIR /app
 
 # Копируем зависимости
 COPY requirements.txt .
@@ -14,10 +14,10 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Устанавливаем переменные окружения для Python
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 
 # Команда для запуска приложения
-#CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000", "--log-level", "warning"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
+#CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "main:app", "--bind", "0.0.0.0:8000", "--log-level", "info"]
+#CMD ["python", "-u", "-m", "uvicorn", "debug:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
 #CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "debug:app", "--bind", "0.0.0.0:8000", "--log-level", "warning"]
-#CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
-CMD ["python", "-u", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--log-level", "info"]
